@@ -288,45 +288,6 @@ VWFunctions.LoadServices = function()
     for i,v in pairs(services) do VWFunctions.GlobaliseObject(i,v) end
 end
 
-VWFunctions.EditWL = function(argTable)
-    local NewTag_text
-    local NewTag_color
-    local Roblox_Username
-    if type(argTable) == "table" and argTable["api_key"] then
-        if argTable["TagColor"] then NewTag_color = tostring(argTable["TagColor"]) end
-        if argTable["TagText"] then NewTag_text = tostring(argTable["TagText"]) end
-        if argTable["RobloxUsername"] then Roblox_Username = tostring(argTable["RobloxUsername"]) end
-
-        if NewTag_text or NewTag_color or Roblox_Username then
-            local api_key = argTable["api_key"]
-            local tag_text = NewTag_text or ""
-            local tag_color = NewTag_color or ""
-            local roblox_username = Roblox_Username or game:GetService("Players").LocalPlayer.Name
-
-            local headers = {
-                ["Content-type"] = "application/json",
-                ["api-key"] = tostring(api_key)
-            }
-            local data = {}
-            if tag_text ~= "" then data["tag_text"] = tag_text end
-            if tag_color ~= "" then data["tag_color"] = tag_color end
-            data["roblox_username"] = tostring(roblox_username)
-            data["hwid"] = tostring(game:GetService("RbxAnalyticsService"):GetClientId())
-            local final_data = game:GetService("HttpService"):JSONEncode(data)
-            local url = "https://whitelist.vapevoidware.xyz/edit_wl"
-            local a = request({
-                Url = url,
-                Method = 'POST',
-                Headers = headers,
-                Body = final_data
-            })
-            return a
-        end
-    else
-        print("Invalid table. 1: "..tostring(type(argTable)).." 2: "..tostring(#argTable).." 3: "..tostring(argTable["api_key"]))
-        return "Invalid table. 1: "..tostring(type(argTable)).." 2: "..tostring(#argTable).." 3: "..tostring(argTable["api_key"])
-    end
-end
 
 VWFunctions.fetchCheatEngineSupportFile = function(fileName)
     local url = "https://raw.githubusercontent.com/WhichChapter/SWCE/main/CheatEngine/"..tostring(fileName)
